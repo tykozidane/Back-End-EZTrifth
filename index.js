@@ -1,5 +1,6 @@
 const express = require("express");
 const { connect } = require("http2");
+var cors = require('cors');
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -16,6 +17,7 @@ mongoose
     console.log(err);
     });
 
+    app.use(cors())
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
