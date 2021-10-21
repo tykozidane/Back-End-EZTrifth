@@ -74,8 +74,8 @@ router.put("/delete/:id", verifyToken, async (req, res) => {
 router.get("/find/:userId", verifyToken, async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.params.userId });
-    // const sum = 0;
-    // cart.products.forEach(function(productId){
+    // if(cart){
+    //   const cekProduct = cart.products.forEach(function(productId){
     //   var searchProduct = Product.get(productId);
     //   if (searchProduct.status == "sold"){
     //     var updatedCart = Cart.findByIdAndUpdate(
@@ -92,6 +92,8 @@ router.get("/find/:userId", verifyToken, async (req, res) => {
     //   }
     //   sum = sum+1;
     // });
+    // }
+    
     res.status(200).json(cart);
   } catch (err) {
     res.status(500).json(err);

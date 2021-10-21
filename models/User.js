@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    notelp: {type: String, required: true},
+    kota: {type: String, default: " "},
+    provinsi: {type: String, default: " "},
+    alamat: {type: String, default: " "},
+    img: {type: String, default: " "},
     
 },{ timestamps: true });
 
