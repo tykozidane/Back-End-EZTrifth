@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const Cart = require("../models/Cart");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 
@@ -16,7 +17,13 @@ router.post("/register", async (req,res) =>{
 
     try {
     const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    const user = await User.findOne({username: newUser.username });
+    const newCart = new Cart({
+        userId: user._id,
+        product : [""],
+    })
+    const savedCart = await newCart.save();
+    res.status(201).json(savedUser, savedCart);
     } catch(err) {
         res.status(500).json(err);
     }

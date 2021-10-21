@@ -15,4 +15,21 @@ const ProductSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+
+ProductSchema.statics = {
+  /**
+   * Find project by _id
+   *
+   * @param {ObjectId} _id
+   * @api private
+   */
+
+  get: function (_id) {
+      return this.findOne({
+              _id
+          })
+          .exec();
+  }
+}
+
 module.exports = mongoose.model("Product", ProductSchema);
