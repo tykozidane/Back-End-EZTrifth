@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    notelp: {type: String, required: true},
+    notelp: {type: String, default: " "},
     kota: {type: String, default: " "},
     provinsi: {type: String, default: " "},
     alamat: {type: String, default: " "},

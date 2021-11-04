@@ -104,4 +104,14 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
+//Get Product Terfverifikasi Admin
+router.get("/penjualan", verifyTokenAndAdmin, async (req, res) => {
+  const statusverif = "terverifikasi"
+  try {
+    const orders = await Order.find({ status: statusverif });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;

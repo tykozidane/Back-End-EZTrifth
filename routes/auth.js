@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
           product: [""],
         });
         const savedCart = await newCart.save();
-        res.status(201).json(savedUser, savedCart);
+        res.status(201).json(savedUser);
       } catch (err) {
         res.status(500).json(err);
       }

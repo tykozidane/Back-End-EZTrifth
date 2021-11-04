@@ -17,7 +17,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //UPDATE
-router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -76,5 +76,17 @@ router.get("/", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+//GET DASHBOARD PENJUAL
+router.get("/seller/:userId", verifyTokenAndAuthorization, async (req, res) => {
+  try {
+    const orders = await Product.find({ userId: req.params.userId });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
 
 module.exports = router;

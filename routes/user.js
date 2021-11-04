@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Order = require("../models/Order");
 const {
   verifyToken,
   verifyTokenAndAuthorization,
@@ -40,9 +41,8 @@ router.delete("/:userId", verifyTokenAndAuthorization, async (req, res) => {
     res.status(500).json(err);
   }
 });
-
 //GET USER
-router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const { password, ...others } = user._doc;
@@ -51,6 +51,7 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
     res.status(500).json(err);
   }
 });
+//ADMIN AKSES 
 
 //GET ALL USER
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
@@ -87,6 +88,40 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
       },
     ]);
     res.status(200).json(data)
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.put("/verification/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { 
+            status: "terverifikasi"
+        }
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedOrder);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.put("/sending/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { 
+            status: "sending"
+        }
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedOrder);
   } catch (err) {
     res.status(500).json(err);
   }
