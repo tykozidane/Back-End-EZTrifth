@@ -71,12 +71,17 @@ router.put("/delete/:userId", verifyTokenAndAuthorization, async (req, res) => {
 // });
 
 //GET USER CART
-router.get("/find/:cart", verifyTokenAndUsername, async (req, res) => {
+router.get("/find/:cartid", verifyToken, async (req, res) => {
   try {
-    const user = await User.findOne({username: req.params.username});
-    const cart = await Cart.findOne({ userId: user._id });
-    const productnya = await Product.find().where('_id').in(cart.products["productId"]).exec();
-    const test = cart.products;
+    // const user = await User.findOne({username: req.params.username});
+    const cart = await Cart.findById(req.params.cartid);
+    if(req.user.id === cart.userId){
+      res.status(200).json(cart);
+    } else {
+      res.status(403).json("You are not alowed to do that!");
+    }
+    // const productnya = await Product.find().where('_id').in(cart.products).exec();
+    // const test = cart.products;
     // if(cart){
     //   const cekProduct = cart.products.forEach(function(productId){
     //   var searchProduct = Product.get(productId);
@@ -97,7 +102,7 @@ router.get("/find/:cart", verifyTokenAndUsername, async (req, res) => {
     // });
     // }
     
-    res.status(200).json(test);
+    
   } catch (err) {
     res.status(500).json(err);
   }
