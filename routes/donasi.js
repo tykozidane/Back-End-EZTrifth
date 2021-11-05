@@ -9,7 +9,7 @@ const router = require("express").Router();
 
 //CREATE
 
-router.post("/", verifyTokenAndAuthorization, async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   const newDonasi = new Donasi(req.body);
 
   try {

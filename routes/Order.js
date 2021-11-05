@@ -35,6 +35,37 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
     res.status(500).json(err);
   }
 });
+//Verifikasi pembayaran
+router.put("/verifikasi/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: "Terverifikasi",
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedOrder);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+//Sending Orders
+router.put("/kirim/:id", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+        status: "sending",
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedOrder);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 //DELETE
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
@@ -106,7 +137,7 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
 
 //Get Product Terfverifikasi Admin
 router.get("/penjualan", verifyTokenAndAdmin, async (req, res) => {
-  const statusverif = "terverifikasi"
+  const statusverif = "Terverifikasi";
   try {
     const orders = await Order.find({ status: statusverif });
     res.status(200).json(orders);
