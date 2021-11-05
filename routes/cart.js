@@ -71,10 +71,10 @@ router.put("/delete/:userId", verifyTokenAndAuthorization, async (req, res) => {
 // });
 
 //GET USER CART
-router.get("/find/:cartid", verifyToken, async (req, res) => {
+router.get("/find/:userid", verifyToken, async (req, res) => {
   try {
     // const user = await User.findOne({username: req.params.username});
-    const cart = await Cart.findById(req.params.cartid);
+    const cart = await Cart.findOne({ userId : req.params.userid});
     const productnya = await Product.find({ _id: { $in: cart.products } });
     if(req.user.id === cart.userId){
       res.status(200).json(productnya);
