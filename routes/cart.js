@@ -32,9 +32,7 @@ router.put("/add/:userId", verifyTokenAndAuthorization, async (req, res) => {
       getCart._id,
       {
         $push: { 
-            products: {
-              "productId" : req.body.productId,
-              } 
+            products: req.body.productId,
         }
       },
       { new: true }
@@ -52,9 +50,7 @@ router.put("/delete/:userId", verifyTokenAndAuthorization, async (req, res) => {
         getCart._id,
         {
           $pull: { 
-              products: {
-                "productId" : req.body.productId,
-                } 
+              products: req.body.productId,
           }
         },
         { new: true }
@@ -75,10 +71,12 @@ router.put("/delete/:userId", verifyTokenAndAuthorization, async (req, res) => {
 // });
 
 //GET USER CART
-router.get("/find/:username", verifyTokenAndUsername, async (req, res) => {
+router.get("/find/:cart", verifyTokenAndUsername, async (req, res) => {
   try {
     const user = await User.findOne({username: req.params.username});
     const cart = await Cart.findOne({ userId: user._id });
+    const productnya = await Product.find().where('_id').in(cart.products["productId"]).exec();
+    const test = cart.products;
     // if(cart){
     //   const cekProduct = cart.products.forEach(function(productId){
     //   var searchProduct = Product.get(productId);
@@ -99,7 +97,7 @@ router.get("/find/:username", verifyTokenAndUsername, async (req, res) => {
     // });
     // }
     
-    res.status(200).json(cart);
+    res.status(200).json(test);
   } catch (err) {
     res.status(500).json(err);
   }
