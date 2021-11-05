@@ -1,5 +1,5 @@
 const Product = require("../models/Product");
-const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
+const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin, verifyTokenAndUsername } = require("./verifyToken");
 
 const router = require("express").Router();
 
@@ -17,7 +17,24 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //UPDATE
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put("/:username/:id", verifyTokenAndUsername, async (req, res) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+        status: "selling",
+        
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedProduct);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -78,9 +95,9 @@ router.get("/", async (req, res) => {
 });
 
 //GET DASHBOARD PENJUAL
-router.get("/seller/:userId", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/seller/:username", verifyTokenAndUsername, async (req, res) => {
   try {
-    const orders = await Product.find({ userId: req.params.userId });
+    const orders = await Product.find({ username: req.params.username });
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);

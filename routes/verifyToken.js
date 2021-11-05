@@ -34,8 +34,19 @@ const verifyTokenAndAdmin = (req, res, next) => {
   });
 };
 
+const verifyTokenAndUsername = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user.username === req.params.userna || req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json("You are not alowed to do that!");
+    }
+  });
+};
+
 module.exports = {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
+  verifyTokenAndUsername,
 };
