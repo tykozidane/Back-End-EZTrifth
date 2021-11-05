@@ -75,12 +75,13 @@ router.get("/find/:cartid", verifyToken, async (req, res) => {
   try {
     // const user = await User.findOne({username: req.params.username});
     const cart = await Cart.findById(req.params.cartid);
+    const productnya = await Product.find({ _id: { $in: cart.products } });
     if(req.user.id === cart.userId){
-      res.status(200).json(cart);
+      res.status(200).json(productnya);
     } else {
       res.status(403).json("You are not alowed to do that!");
     }
-    // const productnya = await Product.find().where('_id').in(cart.products).exec();
+    
     // const test = cart.products;
     // if(cart){
     //   const cekProduct = cart.products.forEach(function(productId){
