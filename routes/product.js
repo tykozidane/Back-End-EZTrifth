@@ -1,12 +1,22 @@
 const Product = require("../models/Product");
+const User = require("../models/User");
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin, verifyTokenAndUsername } = require("./verifyToken");
 
 const router = require("express").Router();
 
 //CREATE
-
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const newProduct = new Product(req.body);
+  const useridnya = await User.findOne({username : req.body.username});
+  const newProduct = new Product({
+    title : req.body.title,
+    userid : useridnya._id,
+    desc : req.body.desc,
+    img : req.body.img,
+    categories : req.body.categories,
+    size : req.body.size,
+    color : req.body.color,
+    prize : req.body.prize
+  });
 
   try {
     const savedProduct = await newProduct.save();
@@ -97,7 +107,8 @@ router.get("/", async (req, res) => {
 //GET DASHBOARD PENJUAL
 router.get("/seller/:username", verifyTokenAndUsername, async (req, res) => {
   try {
-    const orders = await Product.find({ username: req.params.username });
+    const useridnya = await User.findOne({username : req.params.username});
+    const orders = await Product.find({ userid: useridnya._id });
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
