@@ -60,6 +60,24 @@ router.put("/delete/:userId", verifyTokenAndAuthorization, async (req, res) => {
       res.status(500).json(err);
     }
   });
+// Update Delete All Product
+router.put("/deleteall/:userId", verifyTokenAndAuthorization, async (req, res) => {
+  try {
+    const getCart = await Cart.findOne({userId: req.params.userId});
+    const updatedCart = await Cart.findByIdAndUpdate(
+      getCart._id,
+      {
+        $set: { 
+            "products": []
+        }
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedCart);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 //DELETE
 // router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
 //   try {
