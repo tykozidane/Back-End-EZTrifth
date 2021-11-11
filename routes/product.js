@@ -43,8 +43,22 @@ router.put("/:username/:id", verifyTokenAndUsername, async (req, res) => {
     res.status(500).json(err);
   }
 });
-
-router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+//Update Product be SOLD
+router.put("/sold/:id", verifyToken, async (req, res) => {
+  try {
+    const updatedOrder = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: "sold",
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedOrder);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
