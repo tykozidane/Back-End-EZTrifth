@@ -130,5 +130,4 @@ router.get("/seller/:username", verifyTokenAndUsername, async (req, res) => {
 });
 
 
-
 module.exports = router;
