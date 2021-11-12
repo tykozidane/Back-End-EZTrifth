@@ -22,7 +22,7 @@ mongoose
 
     app.use(cors())
 app.use(express.json());
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => res.send('Jalan jalan kok Aman!'));
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
