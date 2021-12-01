@@ -15,7 +15,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
     categories : req.body.categories,
     size : req.body.size,
     color : req.body.color,
-    price : req.body.prize
+    price : req.body.price
   });
 
   try {
