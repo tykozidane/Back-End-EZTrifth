@@ -49,7 +49,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 //GET Donasi user
 router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
   try {
-    const donasis = await Donasi.find({ userId: req.params.userId });
+    const donasis = await Donasi.find({ userId: req.params.userId }).sort({createdAt:-1});
     res.status(200).json(donasis);
   } catch (err) {
     res.status(500).json(err);
@@ -60,7 +60,7 @@ router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
 
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const donasis = await Donasi.find();
+    const donasis = await Donasi.find().sort({createdAt:-1});
     res.status(200).json(donasis);
   } catch (err) {
     res.status(500).json(err);

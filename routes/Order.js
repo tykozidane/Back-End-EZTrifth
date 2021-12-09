@@ -80,7 +80,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 //GET USER ORDERS
 router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
   try {
-    const orders = await Order.find({ userId: req.params.userId });
+    const orders = await Order.find({ userId: req.params.userId }).sort({createdAt:-1});
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
@@ -91,7 +91,7 @@ router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
 
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().sort({createdAt:-1});
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
@@ -139,7 +139,7 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
 router.get("/penjualan", verifyTokenAndAdmin, async (req, res) => {
   const statusverif = "Terverifikasi";
   try {
-    const orders = await Order.find({ status: statusverif });
+    const orders = await Order.find({ status: statusverif }).sort({createdAt:-1});
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
